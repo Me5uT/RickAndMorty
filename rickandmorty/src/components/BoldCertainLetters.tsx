@@ -14,7 +14,7 @@ export const BoldCertainLetters: React.FC<IBoldCertainLetters> = ({
 
     // Her harfi döngüye al
     for (let i = 0; i < text.length; i++) {
-      const letter = text[i];
+      const letter = text[i].toLocaleLowerCase();
       // Eğer harf boldLetters içindeyse, kalın biçimde render et
       if (boldLetters.includes(letter)) {
         boldText.push(<strong key={index}>{letter}</strong>);

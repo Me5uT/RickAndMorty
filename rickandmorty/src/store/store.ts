@@ -17,8 +17,13 @@ export const useStore = create((set, get: any) => ({
   setLoading: (isLoading: boolean) =>
     set((state: any) => ({ ...state, loading: isLoading })),
 
-  searchCharacter: (name: string) => {
-    fetch(`${API_URL}/character/?name=${name}&page=${1}`)
+  setQuery: (q: string) =>
+    set({
+      query: q,
+    }),
+
+  searchCharacter: (name: string, page: number = 1) => {
+    fetch(`${API_URL}/character/?name=${name}&page=${page}`)
       .then((response) => response.json())
       .then((v) => {
         if (v.error) {

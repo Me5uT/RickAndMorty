@@ -3,10 +3,7 @@ import { Select, Space, Spin } from "antd";
 import React from "react";
 import { useStore } from "../store/store";
 import { BoldCertainLetters } from "./BoldCertainLetters";
-export type Page = {
-  offset: number;
-  limit: number;
-};
+
 export const SearchInput: React.FC = () => {
   const {
     errorMessage,
@@ -18,26 +15,33 @@ export const SearchInput: React.FC = () => {
     loading,
     setLoading,
     searchCharacter,
+    setQuery,
   } = useStore((state: any) => state);
-  console.log("🚀 ~ loading:", loading);
-  console.log("🚀 ~ characters:", characters);
-  console.log("🚀 ~ totalCount:", totalCount);
-  console.log("🚀 ~ currentPage:", currentPage);
   console.log("🚀 ~ query:", query);
-  console.log("🚀 ~ errorMessage:", errorMessage);
 
   return (
     <div>
       <Select
         mode={"multiple"}
+        placeholder={"Search ..."}
         style={{ width: "250px" }}
         filterOption={false}
         showSearch
-        options={characters}
-        onSearch={(v: string) => {
-          searchCharacter(v);
-        }}
         notFoundContent={<div>{errorMessage}</div>}
+        options={characters.map((char: any) => ({
+          key: char.id,
+          value: char.name,
+          label: char.name,
+          episode: char.episode,
+          image: char.image,
+        }))}
+        onSearch={(v: string) => {
+          searchCharacter(v.toLowerCase());
+          setQuery(v.toLowerCase());
+        }}
+        onClear={() => {
+          searchCharacter("", 1);
+        }}
         onPopupScroll={async (e: any) => {
           e.persist();
           const { target } = e;
@@ -64,11 +68,11 @@ export const SearchInput: React.FC = () => {
           </>
         )}
         optionRender={(opt) => (
-          <Space direction="horizontal">
+          <Space key={`${opt.data.key}${opt.data.name}`} direction="horizontal">
             <img src={opt.data.image} width={35} />
             <Space direction="vertical">
               <BoldCertainLetters
-                text={opt.data.name}
+                text={opt.data.label}
                 boldLetters={query.split("")}
               />
               <div>
