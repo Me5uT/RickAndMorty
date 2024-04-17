@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const API_URL = "https://rickandmortyapi.com/api";
 
 export const getPageOnUrl = (url: string): number => {

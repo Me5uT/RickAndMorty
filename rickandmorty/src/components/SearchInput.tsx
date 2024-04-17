@@ -2,26 +2,30 @@
 import { Select, Space, Spin } from "antd";
 import React from "react";
 import { useStore } from "../store/store";
+import { BoldCertainLetters } from "./BoldCertainLetters";
 export type Page = {
   offset: number;
   limit: number;
 };
 export const SearchInput: React.FC = () => {
-  const loading = useStore((state: any) => state.loading);
+  const {
+    errorMessage,
+    query,
+    currentPage,
+    totalCount,
+    characters,
+    loadMore,
+    loading,
+    setLoading,
+    searchCharacter,
+  } = useStore((state: any) => state);
   console.log("🚀 ~ loading:", loading);
-  const setLoading = useStore((state: any) => state.setLoading);
-  const searchCharacter = useStore((state: any) => state.searchCharacter);
-  const loadMore = useStore((state: any) => state.loadMore);
-  const characters = useStore((state: any) => state.characters);
   console.log("🚀 ~ characters:", characters);
-  const totalCount = useStore((state: any) => state.totalCount);
   console.log("🚀 ~ totalCount:", totalCount);
-  const currentPage = useStore((state: any) => state.currentPage);
   console.log("🚀 ~ currentPage:", currentPage);
-  const query = useStore((state: any) => state.query);
   console.log("🚀 ~ query:", query);
-  const errorMessage = useStore((state: any) => state.errorMessage);
   console.log("🚀 ~ errorMessage:", errorMessage);
+
   return (
     <div>
       <Select
@@ -63,7 +67,10 @@ export const SearchInput: React.FC = () => {
           <Space direction="horizontal">
             <img src={opt.data.image} width={35} />
             <Space direction="vertical">
-              <div>{opt.data.name}</div>
+              <BoldCertainLetters
+                text={opt.data.name}
+                boldLetters={query.split("")}
+              />
               <div>
                 {`${opt.data.episode.length} ${
                   opt.data.episode.length > 1 ? "Episodes" : "Episode"
